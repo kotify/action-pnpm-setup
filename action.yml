@@ -1,0 +1,25 @@
+name: "Setup pnpm"
+description: "Installs node deps with pnpm"
+
+inputs:
+  node-version:
+    description: node version
+    required: false
+    default: "18"
+  pnpm-version:
+    description: pnpm version
+    required: false
+    default: "7"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: pnpm/action-setup@c3b53f6a16e57305370b4ae5a540c2077a1d50dd
+      with:
+        version: ${{ inputs.pnpm-version }}
+    - uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: "pnpm"
+    - run: pnpm install --frozen-lockfile --strict-peer-dependencies
+      shell: bash
